@@ -24,3 +24,18 @@ server.getSessionConfigurations().add(new BGPSessionConfiguration(
 ));
 server.run();
 ```
+
+## Maven
+```xml
+<repository>
+    <id>lumaserv</id>
+    <url>https://maven.lumaserv.cloud</url>
+</repository>
+```
+```xml
+<dependency>
+    <groupId>com.lumaserv</groupId>
+    <artifactId>bgp-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
