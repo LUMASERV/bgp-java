@@ -43,7 +43,7 @@ public class BGPServer implements Runnable {
                     continue;
                 BGPOpen request = new BGPOpen(packet.getMessage());
                 BGPSessionConfiguration config = sessionConfigurations.stream()
-                        .filter(c -> c.getRemoteAs() == request.getAsn() && checkEqual(c.getRemoteIdentifier(), request.getIdentifier()))
+                        .filter(c -> c.getRemoteAs() == request.getAsn())
                         .findFirst()
                         .orElse(null);
                 if(config == null)
