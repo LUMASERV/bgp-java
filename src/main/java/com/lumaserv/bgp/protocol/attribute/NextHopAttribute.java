@@ -1,5 +1,10 @@
 package com.lumaserv.bgp.protocol.attribute;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class NextHopAttribute implements PathAttribute {
 
     byte[] address;

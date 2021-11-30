@@ -15,6 +15,8 @@ public class BGPSession implements Runnable {
     final BGPSessionConfiguration configuration;
     final InputStream inputStream;
     final OutputStream outputStream;
+    @Getter
+    boolean closed;
 
     public BGPSession(Socket socket, BGPSessionConfiguration configuration) throws IOException {
         this.configuration = configuration;
@@ -32,6 +34,10 @@ public class BGPSession implements Runnable {
 
     private void handle(BGPPacket packet) {
         switch (packet.getType()) {
+            case NOTIFICATION:
+                closed = true;
+                configuration.getListener().onClose(this);
+                break;
             case KEEPALIVE:
                 keepAlive();
                 break;
@@ -44,7 +50,7 @@ public class BGPSession implements Runnable {
 
     public void run() {
         try {
-            while (true)
+            while (!closed)
                 handle(BGPPacket.read(inputStream));
         } catch (IOException ex) {
             ex.printStackTrace();

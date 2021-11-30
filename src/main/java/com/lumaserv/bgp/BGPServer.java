@@ -17,7 +17,11 @@ public class BGPServer implements Runnable {
     final List<BGPSessionConfiguration> sessionConfigurations = new ArrayList<>();
 
     public BGPServer() throws IOException {
-        serverSocket = new ServerSocket(179);
+        this(179);
+    }
+
+    public BGPServer(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
     }
 
     private static boolean checkEqual(byte[] a, byte[] b) {
@@ -48,6 +52,8 @@ public class BGPServer implements Runnable {
                         .orElse(null);
                 if(config == null)
                     continue;
+                BGPSession session = new BGPSession(socket, config);
+                config.getListener().onOpen(session);
                 BGPOpen response = new BGPOpen()
                         .setAsn(config.getLocalAs())
                         .setHoldTime(request.getHoldTime())
@@ -58,7 +64,6 @@ public class BGPServer implements Runnable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                BGPSession session = new BGPSession(socket, config);
                 session.keepAlive();
                 new Thread(session).start();
             } catch (IOException ex) {

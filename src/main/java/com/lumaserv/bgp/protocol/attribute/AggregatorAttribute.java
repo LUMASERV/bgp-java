@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class AggregatorAttribute implements PathAttribute {
 
-    int as;
+    final int as;
     byte[] origin;
 
     public AggregatorAttribute(byte typeCode, byte[] data) {
