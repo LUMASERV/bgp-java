@@ -52,15 +52,11 @@ public class BGPSession implements Runnable {
     public void run() {
         try {
             while (!closed) {
-                try {
-                    handle(BGPPacket.read(inputStream));
-                } catch (SocketException ignored) {
-                    closed = true;
-                    configuration.getListener().onClose(this);
-                }
+                handle(BGPPacket.read(inputStream));
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            closed = true;
+            configuration.getListener().onClose(this);
         }
     }
 
