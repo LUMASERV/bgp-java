@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class BGPSession implements Runnable {
 
@@ -50,8 +51,14 @@ public class BGPSession implements Runnable {
 
     public void run() {
         try {
-            while (!closed)
-                handle(BGPPacket.read(inputStream));
+            while (!closed) {
+                try {
+                    handle(BGPPacket.read(inputStream));
+                } catch (SocketException ignored) {
+                    closed = true;
+                    configuration.getListener().onClose(this);
+                }
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
