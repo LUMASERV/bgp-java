@@ -1,0 +1,30 @@
+buildscript {
+    ext {
+        lombokVersion = '1.18.22'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+dependencies {
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+}
+
+group = 'com.lumaserv'
+version = '1.0-SNAPSHOT'
+description = 'bgp-java'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
